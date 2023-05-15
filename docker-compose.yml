@@ -1,0 +1,48 @@
+version: '3'
+services:
+  emqx-enterprise:
+    image: emqx/emqx-enterprise:5.0.3
+    # command: /opt/entrypoint.sh
+    container_name: emqx-enterprise
+    ports:
+      - 1883:1883
+      - 8083:8083
+      - 8084:8084
+      - 8883:8883
+      - 18083:18083
+    networks:
+      - emqx-net
+    volumes:
+      - $PWD/cluster.hocon:/opt/emqx/data/configs/cluster.hocon
+    
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg12
+    container_name: timescale
+    ports:
+      - 5432:5432
+    networks:
+      - emqx-net
+    volumes:
+      - $PWD/create-table.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=public
+      - POSTGRES_DB=iot_data
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    networks:
+      - emqx-net
+    depends_on:
+      - emqx-enterprise
+      - timescaledb
+
+# TODO Add MQTTX CLI Simulate
+
+networks:
+  emqx-net:
+    driver: bridge
