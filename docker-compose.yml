@@ -1,28 +1,26 @@
-version: '3'
+version: '3.8'
 services:
   emqx-enterprise:
     image: emqx/emqx-enterprise:5.0.3
     # command: /opt/entrypoint.sh
-    container_name: emqx-enterprise
+    container_name: emqx-enterprise-demo
     ports:
       - 1883:1883
       - 8083:8083
       - 8084:8084
       - 8883:8883
       - 18083:18083
-    networks:
-      - emqx-net
     volumes:
-      - $PWD/cluster.hocon:/opt/emqx/data/configs/cluster.hocon
-    
+      - $PWD/emqx/cluster.hocon:/opt/emqx/data/configs/cluster.hocon
+      - $PWD/emqx/api_secret:/opt/emqx/data/api_secret
+    environment:
+      EMQX_DASHBOARD__BOOTSTRAP_USERS_FILE: '"/opt/emqx/data/api_secret"'
 
   timescaledb:
     image: timescale/timescaledb:latest-pg12
-    container_name: timescale
+    container_name: timescaledb-demo
     ports:
       - 5432:5432
-    networks:
-      - emqx-net
     volumes:
       - $PWD/create-table.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
@@ -30,13 +28,38 @@ services:
       - POSTGRES_PASSWORD=public
       - POSTGRES_DB=iot_data
 
+  emqx-exporter:
+    image: emqx/emqx-exporter
+    container_name: exporter-demo
+    ports:
+      - 8085:8085
+    command:
+      - '--emqx.nodes=emqx-enterprise-demo:18083'
+      - '--emqx.auth-username=76668f8a2003d597'
+      - '--emqx.auth-password=CRCDB6lxxzN58e5HoD82llBC0Erg1TVZIAUsdTjPU7N'
+    depends_on:
+      - emqx-enterprise
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus-demo
+    ports:
+      - 9090:9090
+    volumes:
+      - $PWD/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+
   grafana:
-    image: grafana/grafana
-    container_name: grafana
+    image: grafana/grafana:9.5.2
+    container_name: grafana-demo
     ports:
       - 3000:3000
-    networks:
-      - emqx-net
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=public
+    volumes:
+      - $PWD/grafana-dashboards:/grafana-dashboard-timescaleDB
+      - $PWD/emqx-exporter/config/grafana-template/EMQX5-enterprise:/grafana-dashboard-emqx5-ee
+      - $PWD/grafana-provisioning/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      - $PWD/grafana-provisioning/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
     depends_on:
       - emqx-enterprise
       - timescaledb
@@ -45,4 +68,4 @@ services:
 
 networks:
   emqx-net:
-    driver: bridge
+    #driver: bridge

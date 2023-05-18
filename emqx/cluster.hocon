@@ -18,7 +18,7 @@ bridges {
         start_timeout = "5s"
         worker_pool_size = 16
       }
-      server = "timescale:5432"
+      server = "timescaledb-demo:5432"
       sql = "INSERT INTO energy_log (factory_id, factory, air_compressor_1, air_compressor_2, lighting, cooling_equipment, heating_equipment, conveyor, coating_equipment, inspection_equipment, welding_equipment, packaging_equipment, cutting_equipment, timestamp) \nVALUES (${payload.factory_id}, ${payload.factory}, ${payload.values.air_compressor_1}, ${payload.values.air_compressor_2}, ${payload.values.lighting}, ${payload.values.cooling_equipment}, ${payload.values.heating_equipment}, ${payload.values.conveyor}, ${payload.values.coating_equipment}, ${payload.values.inspection_equipment}, ${payload.values.welding_equipment}, ${payload.values.packaging_equipment}, ${payload.values.cutting_equipment}, to_timestamp(${payload.timestamp} / 1000.0));\n"
       ssl {
         ciphers = []

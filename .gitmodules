@@ -1,0 +1,3 @@
+[submodule "emqx-exporter"]
+	path = emqx-exporter
+	url = https://github.com/emqx/emqx-exporter.git

@@ -1,0 +1,17 @@
+apiVersion: 1
+
+providers:
+  - name: TimescaleDB
+    folder: "TimescaleDB"
+    folderUid: ""
+    options:
+      path: "/grafana-dashboard-timescaleDB"
+    orgI": 1
+    type: "file"
+  - name: EMQX
+    folder: "EMQX5-EE"
+    folderUid: ""
+    options:
+      path: "/grafana-dashboard-emqx5-ee"
+    orgI": 1
+    type: "file"
