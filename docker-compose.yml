@@ -4,7 +4,7 @@ services:
     image: emqx/emqx-enterprise:5.0.3
     healthcheck:
       test: ["CMD", "emqx", "ping"]
-      interval: 5s
+      interval: 10s
       timeout: 10s
       retries: 12
     ports:
