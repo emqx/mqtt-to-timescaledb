@@ -28,15 +28,15 @@ submodule: ## Update submodule
 
 up: ## Start docker compose
 	@echo "Starting docker compose, please wait..."
-	@docker compose --project-name mqtt-to-timescaledb up -d
+	@docker compose up -d
 
 down: ## Stop docker compose
 	@echo "Stopping docker compose, please wait..."
-	@docker compose --project-name mqtt-to-timescaledb down
+	@docker compose down
 
 notes:
 	@echo "Now you can running the following commands to see the details of message"
 	@echo '```'
-	@echo "docker logs -f mqtt-to-timescaledb-mqttx-sub-1"
+	@echo "docker logs -f mqttx"
 	@echo '```'
 	@echo "If you want to view the Grafana dashboard, you can open http://localhost:3000 in your browser, and login with admin:public"

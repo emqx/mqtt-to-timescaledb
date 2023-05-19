@@ -2,6 +2,7 @@ version: '3.8'
 services:
   emqx-enterprise:
     image: emqx/emqx-enterprise:5.0.3
+    container_name: emqx
     healthcheck:
       test: ["CMD", "emqx", "ping"]
       interval: 10s
@@ -18,6 +19,7 @@ services:
 
   emqx-exporter:
     image: emqx/emqx-exporter
+    container_name: emqx-exporter
     ports:
       - 8085:8085
     command:
@@ -28,8 +30,9 @@ services:
       emqx-enterprise:
         condition: service_healthy
 
-  mqttx-pub:
+  mqttx-simulate:
     image: emqx/mqttx-cli:v1.9.3
+    container_name: mqttx-simulate
     command:
       - /bin/sh
       - -c
@@ -39,8 +42,9 @@ services:
       emqx-enterprise:
         condition: service_healthy
 
-  mqttx-sub:
+  mqttx:
     image: emqx/mqttx-cli:v1.9.3
+    container_name: mqttx
     command:
       - /bin/sh
       - -c
@@ -52,6 +56,7 @@ services:
 
   timescaledb:
     image: timescale/timescaledb:latest-pg12
+    container_name: timescaledb
     ports:
       - 5432:5432
     volumes:
@@ -63,6 +68,7 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.44.0
+    container_name: prometheus
     ports:
       - 9090:9090
     volumes:
@@ -70,6 +76,7 @@ services:
 
   grafana:
     image: grafana/grafana:9.3.2
+    container_name: grafana
     ports:
       - 3000:3000
     environment:
@@ -86,5 +93,5 @@ services:
         condition: service_started
 
 networks:
-  mqtt-to-timescaledb:
-    name: mqtt-to-timescaledb
+  emqx-net:
+    name: emqx-net
