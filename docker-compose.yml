@@ -66,7 +66,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=public
     volumes:
-      - $PWD/grafana-dashboards:/grafana-dashboard-timescaleDB
+      - $PWD/grafana-dashboards:/grafana-dashboard-IEM
       - $PWD/emqx-exporter/config/grafana-template/EMQX5-enterprise:/grafana-dashboard-emqx5-ee
       - $PWD/grafana-provisioning/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
       - $PWD/grafana-provisioning/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml

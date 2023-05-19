@@ -7,13 +7,14 @@ datasources:
     orgId: 1
     url: "http://prometheus-demo:9090"
     editable: true
-  - name: postgres
+  - name: my-timescaledb
     type: postgres
     orgId: 1
     url: "timescaledb-demo:5432"
     editable: true
     isDefault: true
     user: admin
+    database: iot_data
     secureJsonData:
       password: public
     jsonData:

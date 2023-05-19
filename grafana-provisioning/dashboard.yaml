@@ -1,11 +1,11 @@
 apiVersion: 1
 
 providers:
-  - name: TimescaleDB
-    folder: "TimescaleDB"
+  - name: IEM
+    folder: "EMQX Data Integration Demo"
     folderUid: ""
     options:
-      path: "/grafana-dashboard-timescaleDB"
+      path: "/grafana-dashboard-IEM"
     orgI": 1
     type: "file"
   - name: EMQX
