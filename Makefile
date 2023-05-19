@@ -24,16 +24,19 @@ help: ## Display this help.
 
 submodule: ## Update submodule
 	@echo "Updating submodule, please wait..."
-	@git submodule update --init --recursive && echo "Submodule updated successfully!"
+	@git submodule update --init --recursive
 
 up: ## Start docker compose
 	@echo "Starting docker compose, please wait..."
-	@docker compose --project-name mqtt-to-timescaledb up -d && echo "Docker compose started successfully!"
+	@docker compose --project-name mqtt-to-timescaledb up -d
 
 down: ## Stop docker compose
 	@echo "Stopping docker compose, please wait..."
-	@docker compose --project-name mqtt-to-timescaledb down && echo "Docker compose stopped successfully!"
+	@docker compose --project-name mqtt-to-timescaledb down
 
 notes:
-	@echo "Now you can receive the message from mqttx/simulate/IEM/{clientid} topic"
+	@echo "Now you can running the following commands to see the details of message"
+	@echo '```'
+	@echo "docker logs -f mqtt-to-timescaledb-mqttx-sub-1"
+	@echo '```'
 	@echo "If you want to view the Grafana dashboard, you can open http://localhost:3000 in your browser, and login with admin:public"

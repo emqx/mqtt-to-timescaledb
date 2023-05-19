@@ -8,7 +8,7 @@ scrape_configs:
     honor_labels: true
     static_configs:
       # EMQX IP address and port
-      - targets: [emqx-enterprise-demo:18083]
+      - targets: [emqx-enterprise:18083]
         labels:
           # label the cluster name of where the metrics data from
           cluster: test
@@ -23,7 +23,7 @@ scrape_configs:
     metrics_path: /metrics
     scrape_interval: 5s
     static_configs:
-      - targets: [exporter-demo:8085]
+      - targets: [emqx-exporter:8085]
         labels:
           # label the cluster name of where the metrics data from
           cluster: test

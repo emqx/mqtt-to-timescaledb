@@ -16,27 +16,6 @@ services:
     environment:
       EMQX_DASHBOARD__BOOTSTRAP_USERS_FILE: '"/opt/emqx/data/api_secret"'
 
-  mqttx-cli:
-    image: emqx/mqttx-cli:v1.9.3
-    container_name: mqttx-cli-demo
-    # wait for emqx-enterprise to start
-    command: /bin/sh -c "sleep 10 && mqttx simulate -sc IEM -c 10 -h emqx-enterprise-demo"
-    networks:
-      - emqx-net
-    depends_on:
-      - emqx-enterprise
-
-  timescaledb:
-    image: timescale/timescaledb:latest-pg12
-    ports:
-      - 5432:5432
-    volumes:
-      - $PWD/create-table.sql:/docker-entrypoint-initdb.d/init.sql
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=public
-      - POSTGRES_DB=iot_data
-
   emqx-exporter:
     image: emqx/emqx-exporter
     ports:
@@ -48,6 +27,39 @@ services:
     depends_on:
       emqx-enterprise:
         condition: service_healthy
+
+  mqttx-pub:
+    image: emqx/mqttx-cli:v1.9.3
+    command:
+      - /bin/sh
+      - -c
+      - |
+        mqttx simulate -sc IEM -c 10 -h emqx-enterprise
+    depends_on:
+      emqx-enterprise:
+        condition: service_healthy
+
+  mqttx-sub:
+    image: emqx/mqttx-cli:v1.9.3
+    command:
+      - /bin/sh
+      - -c
+      - |
+        mqttx sub -t 'mqttx/simulate/#' -v -h emqx-enterprise
+    depends_on:
+      emqx-enterprise:
+        condition: service_healthy
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg12
+    ports:
+      - 5432:5432
+    volumes:
+      - $PWD/create-table.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=public
+      - POSTGRES_DB=iot_data
 
   prometheus:
     image: prom/prometheus:v2.44.0
