@@ -2,11 +2,6 @@
 
 Ingesting time series data into TimescaleDB using MQTT and EMQX | MQTT Timescale Integration
 
-## TODO
-
-1. Add MQTTX CLI and run simulate MQTT client to publish messages to EMQX
-2. Init Grafana dashboard for data visualization
-
 ## Demo Scenario
 
 This is a SaaS service for IIoT energy consumption analysis.
@@ -14,7 +9,7 @@ Each factory has a production line with multiple devices per line. The factory n
 
 This real-time monitoring and analysis can help factory managers make data-driven decisions, such as identifying equipment failures or abnormal energy consumption, adjusting production schedules to minimize energy consumption, and monitoring and evaluating the effectiveness of energy management measures. To improve energy efficiency and reduce production costs.
 
-![EMQX IIoT Energy Monitoring Example](./image/energy-architecture.png)
+<!-- ![EMQX IIoT Energy Monitoring Example](./image/energy-architecture.png) -->
 
 ## Introduction
 

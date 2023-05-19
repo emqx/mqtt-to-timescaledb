@@ -16,6 +16,16 @@ services:
     environment:
       EMQX_DASHBOARD__BOOTSTRAP_USERS_FILE: '"/opt/emqx/data/api_secret"'
 
+  mqttx-cli:
+    image: emqx/mqttx-cli:v1.9.3
+    container_name: mqttx-cli-demo
+    # wait for emqx-enterprise to start
+    command: /bin/sh -c "sleep 10 && mqttx simulate -sc IEM -c 10 -h emqx-enterprise-demo"
+    networks:
+      - emqx-net
+    depends_on:
+      - emqx-enterprise
+
   timescaledb:
     image: timescale/timescaledb:latest-pg12
     container_name: timescaledb-demo
@@ -63,8 +73,6 @@ services:
     depends_on:
       - emqx-enterprise
       - timescaledb
-
-# TODO Add MQTTX CLI Simulate
 
 networks:
   emqx-net:
