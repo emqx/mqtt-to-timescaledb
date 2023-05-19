@@ -5,12 +5,12 @@ datasources:
     type: prometheus
     access: proxy
     orgId: 1
-    url: "http://prometheus-demo:9090"
+    url: "http://prometheus:9090"
     editable: true
   - name: my-timescaledb
     type: postgres
     orgId: 1
-    url: "timescaledb-demo:5432"
+    url: "timescaledb:5432"
     editable: true
     isDefault: true
     user: admin
