@@ -1,4 +1,4 @@
- mqtt-to-timescaledb
+# MQTT To TimescaleDB
 
 Ingesting time series data into TimescaleDB using MQTT and EMQX | MQTT Timescale Integration
 
